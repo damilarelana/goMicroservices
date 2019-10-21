@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package mathService;
+
+message AddRequest{
+
+}
+
+message AddResponse{
+
+}
+
+message AverageRequest{
+  
+}
+
+message AverageResponse{
+  
+}
+
+message MaxRequest{
+  
+}
+
+message MaxResponse{
+  
+}
+
+message MinRequest{
+  
+}
+
+message MinResponse{
+  
+}
+
+message SumRequest{
+  
+}
+
+message SumResponse{
+  
+}
+
+message SortRequest{
+  
+}
+
+message SortResponse{
+  
+}
+
+service AddService{
+  rpc Compute (AddRequest)  returns (AddResponse){
+    
+  }
+}
+
+service AverageService{
+  rpc Compute (AverageRequest)  returns (AverageResponse){
+    
+  }
+}
+
+service MaxService{
+  rpc Compute (MaxRequest)  returns (MaxResponse){
+    
+  }
+}
+
+service MinService{
+  rpc Compute (MinRequest)  returns (MinResponse){
+    
+  }
+}
+
+service SumService{
+  rpc Compute (SumRequest)  returns (SumResponse){
+    
+  }
+}
+
+service SortService{
+  rpc Compute (SortRequest)  returns (SortResponse){
+
+  }
+}
