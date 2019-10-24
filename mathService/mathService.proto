@@ -3,85 +3,59 @@ syntax = "proto3";
 package mathService;
 
 message AddRequest{
-
+  uint32 x = 1;
+  uint32 y = 2;
 }
 
 message AddResponse{
-
+  uint32 addition = 1;
 }
 
 message AverageRequest{
-  
+  repeated double array = 1;
 }
 
 message AverageResponse{
-  
+  double average = 1;
 }
 
 message MaxRequest{
-  
+  repeated double array = 1;  
 }
 
 message MaxResponse{
-  
+  double maximum = 1;  
 }
 
 message MinRequest{
-  
+  repeated double array = 1;
 }
 
 message MinResponse{
-  
+  double minimum = 1;
 }
 
 message SumRequest{
-  
+    repeated double array = 1;
 }
 
 message SumResponse{
-  
+  double sumArrayValues = 1;
 }
 
 message SortRequest{
-  
+  repeated double array = 1;
 }
 
 message SortResponse{
-  
+  repeated double sortedArray = 1;
 }
 
-service AddService{
-  rpc Compute (AddRequest)  returns (AddResponse){
-    
-  }
-}
-
-service AverageService{
-  rpc Compute (AverageRequest)  returns (AverageResponse){
-    
-  }
-}
-
-service MaxService{
-  rpc Compute (MaxRequest)  returns (MaxResponse){
-    
-  }
-}
-
-service MinService{
-  rpc Compute (MinRequest)  returns (MinResponse){
-    
-  }
-}
-
-service SumService{
-  rpc Compute (SumRequest)  returns (SumResponse){
-    
-  }
-}
-
-service SortService{
-  rpc Compute (SortRequest)  returns (SortResponse){
-
-  }
+service MathService{
+  rpc Add (AddRequest)  returns (AddResponse){}
+  rpc Average (AverageRequest)  returns (AverageResponse){}
+  rpc Max (MaxRequest)  returns (MaxResponse){}
+  rpc Min (MinRequest)  returns (MinResponse){}
+  rpc Sum (SumRequest)  returns (SumResponse){} 
+  rpc Sort (SortRequest)  returns (SortResponse){}
 }
