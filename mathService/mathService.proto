@@ -12,7 +12,7 @@ message AddResponse{
 }
 
 message AverageRequest{
-  repeated double array = 1;
+  repeated double array = 1[packed=true];
 }
 
 message AverageResponse{
@@ -20,7 +20,7 @@ message AverageResponse{
 }
 
 message MaxRequest{
-  repeated double array = 1;  
+  repeated double array = 1[packed=true];  
 }
 
 message MaxResponse{
@@ -28,7 +28,7 @@ message MaxResponse{
 }
 
 message MinRequest{
-  repeated double array = 1;
+  repeated double array = 1[packed=true];
 }
 
 message MinResponse{
@@ -36,7 +36,7 @@ message MinResponse{
 }
 
 message SumRequest{
-    repeated double array = 1;
+    repeated double array = 1[packed=true];
 }
 
 message SumResponse{
@@ -44,11 +44,11 @@ message SumResponse{
 }
 
 message SortRequest{
-  repeated double array = 1;
+  repeated double array = 1[packed=true];
 }
 
 message SortResponse{
-  repeated double sortedArray = 1;
+  repeated double sortedArray = 1[packed=true];
 }
 
 service MathService{

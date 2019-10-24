@@ -1,6 +1,6 @@
 ### goMicroservice
 
-A gRPC based microservices architecture using Go, deployed in a kubernetes cluster and consisting of two microservices:
+A gRPC based microservices implementation in Go, deployed in a kubernetes cluster and consisting of two microservices:
 
 * `Maths` service
 * public `REST API`
