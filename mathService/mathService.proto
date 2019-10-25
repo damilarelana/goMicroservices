@@ -3,12 +3,12 @@ syntax = "proto3";
 package mathService;
 
 message AddRequest{
-  uint32 x = 1;
-  uint32 y = 2;
+  sint64 x = 1;
+  sint64 y = 2;
 }
 
 message AddResponse{
-  uint32 addition = 1;
+  sint64 addition = 1;
 }
 
 message AverageRequest{
