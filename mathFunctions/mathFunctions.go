@@ -5,6 +5,18 @@ func Add(x int64, y int64) int64 {
 	return x + y
 }
 
+// Sum function calculates the total sum of the array values
+func Sum(dynamicArray []float64) float64 { // argument is a slice here
+	if len(dynamicArray) != 0 {
+		var arrayTotal float64
+		for _, value := range dynamicArray {
+			arrayTotal += value
+		}
+		return arrayTotal
+	}
+	return 0
+}
+
 // Average function calculates the average of the total sum of the array values
 func Average(dynamicArray []float64) float64 { // argument is a slice here
 	if len(dynamicArray) != 0 {
