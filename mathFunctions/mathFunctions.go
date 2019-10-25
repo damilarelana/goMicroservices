@@ -1,7 +1,7 @@
 package mathFunctions
 
 // Add function adds up two integers and returns an integer
-func Add(x uint32, y uint32) uint32 {
+func Add(x int64, y int64) int64 {
 	return x + y
 }
 

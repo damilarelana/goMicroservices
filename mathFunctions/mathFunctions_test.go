@@ -12,17 +12,17 @@ type testValues struct {
 	maxValue      float64
 	minValue      float64
 	sortedSlice   []float64
-	testX         uint32
-	testY         uint32
-	additionValue uint32
+	testX         int64
+	testY         int64
+	additionValue int64
 }
 
 // Implement the testValues struct with actual testPairs
 var testValuesFieldSet = []testValues{
-	{[]float64{2, 1}, 1.5, 2, 1, []float64{1, 2}, 1, 2, 3},
-	{[]float64{1, 1, 1, 1, 1}, 1, 1, 1, []float64{1, 1, 1, 1, 1}, 2, 1, 3},
+	{[]float64{2, 1}, 1.5, 2, 1, []float64{1, 2}, -1, -2, -3},
+	{[]float64{1, 1, 1, 1, 1}, 1, 1, 1, []float64{1, 1, 1, 1, 1}, -2, 1, -1},
 	{[]float64{-1, 1}, 0, 1, -1, []float64{-1, 1}, 100, 200, 300},
-	{[]float64{1, 2, 4, 3, 5}, 3, 5, 1, []float64{1, 2, 3, 4, 5}, 15, 15, 30},
+	{[]float64{1, 2, 4, 3, 5}, 3, 5, 1, []float64{1, 2, 3, 4, 5}, 15, -15, 0},
 	{[]float64{}, 0, 0, 0, []float64{}, 11, 19, 30},
 }
 
