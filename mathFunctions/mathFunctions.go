@@ -1,5 +1,10 @@
 package mathFunctions
 
+// Add function adds up two integers and returns an integer
+func Add(x uint32, y uint32) uint32 {
+	return x + y
+}
+
 // Average function calculates the average of the total sum of the array values
 func Average(dynamicArray []float64) float64 { // argument is a slice here
 	if len(dynamicArray) != 0 {

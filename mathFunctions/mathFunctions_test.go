@@ -7,23 +7,40 @@ import (
 
 // Define testValues struct i.e. a fieldset of testValues
 type testValues struct {
-	testSlice    []float64
-	averageValue float64
-	maxValue     float64
-	minValue     float64
-	sortedSlice  []float64
+	testSlice     []float64
+	averageValue  float64
+	maxValue      float64
+	minValue      float64
+	sortedSlice   []float64
+	testX         uint32
+	testY         uint32
+	additionValue uint32
 }
 
 // Implement the testValues struct with actual testPairs
 var testValuesFieldSet = []testValues{
-	{[]float64{2, 1}, 1.5, 2, 1, []float64{1, 2}},
-	{[]float64{1, 1, 1, 1, 1}, 1, 1, 1, []float64{1, 1, 1, 1, 1}},
-	{[]float64{-1, 1}, 0, 1, -1, []float64{-1, 1}},
-	{[]float64{1, 2, 4, 3, 5}, 3, 5, 1, []float64{1, 2, 3, 4, 5}},
-	{[]float64{}, 0, 0, 0, []float64{}},
+	{[]float64{2, 1}, 1.5, 2, 1, []float64{1, 2}, 1, 2, 3},
+	{[]float64{1, 1, 1, 1, 1}, 1, 1, 1, []float64{1, 1, 1, 1, 1}, 2, 1, 3},
+	{[]float64{-1, 1}, 0, 1, -1, []float64{-1, 1}, 100, 200, 300},
+	{[]float64{1, 2, 4, 3, 5}, 3, 5, 1, []float64{1, 2, 3, 4, 5}, 15, 15, 30},
+	{[]float64{}, 0, 0, 0, []float64{}, 11, 19, 30},
 }
 
-// TestAverage function tets the Average function in mathPackage
+// TestAdd function tests the Add function in mathPackage
+func TestAdd(t *testing.T) {
+	for _, testValuesExtract := range testValuesFieldSet {
+		returnedValue := Add(testValuesExtract.testX, testValuesExtract.testY)
+		if returnedValue != testValuesExtract.additionValue {
+			t.Error(
+				"For the test integers X and Y", testValuesExtract.testX, testValuesExtract.testY,
+				"The expected addition was", testValuesExtract.additionValue,
+				"But we instead got", returnedValue,
+			)
+		}
+	}
+}
+
+// TestAverage function tests the Average function in mathPackage
 func TestAverage(t *testing.T) {
 	for _, testValuesExtract := range testValuesFieldSet {
 		returnedValue := Average(testValuesExtract.testSlice)
