@@ -40,7 +40,7 @@ message SumRequest{
 }
 
 message SumResponse{
-  double sumArrayValues = 1;
+  double arrayValuesSum = 1;
 }
 
 message SortRequest{
