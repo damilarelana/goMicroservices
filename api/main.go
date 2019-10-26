@@ -2,77 +2,92 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
-	"net"
+	"net/http"
+	"strconv"
+	"time"
 
-	mf "github.com/damilarelana/goMicroservice/mathFunctions"
 	ms "github.com/damilarelana/goMicroservice/mathService"
+	"github.com/gorilla/mux"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/reflection"
 )
 
-// set the Port that the server would be listening/serving from
-const port = ":9090"
-
-// Server to run the service [from mathService.proto]
-type mathService struct {
-	// ...
+// mathServiceAPIHomePage defines the landing page for the API
+func mathServiceAPIHomePage(w http.ResponseWriter, r *http.Request) {
+	dataHomePage := "Endpoint: homepage"
+	io.WriteString(w, dataHomePage)
 }
 
-// Add service handler method
-func (server *mathService) Add(ctx context.Context, r *ms.AddRequest) (*ms.AddResponse, error) {
-	log.Printf("Received input integer %v and %v", r.X, r.Y)
-	return &ms.AddResponse{Addition: mf.Add(r.X, r.Y)}, nil
+// custom404PageHandler defines custom 404 page
+func custom404PageHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html")        // set the content header type
+	w.WriteHeader(http.StatusNotFound)                 // this automatically generates a 404 status code
+	data404Page := "This page does not exist ... 404!" // page content
+	io.WriteString(w, data404Page)
 }
 
-// Average service handler method
-func (server *mathService) Average(ctx context.Context, r *ms.AverageRequest) (*ms.AverageResponse, error) {
-	log.Printf("Received input array %v", r.Array)
-	return &ms.AverageResponse{Average: mf.Average(r.Array)}, nil
+func gRPCClient() MathServiceClient {
+	// Connect to the MathsService
+	conn, err := grpc.Dial("math-service:9090", grpc.WithInsecure())
+	if err != nil {
+		log.Fatal(errors.Wrap(err, fmt.Sprintf("Dial failed")))
+	}
+	msClient := ms.NewMathServiceClient(conn)
+	return msClient
 }
 
-// Max service handler method
-func (server *mathService) Max(ctx context.Context, r *ms.MaxRequest) (*ms.MaxResponse, error) {
-	log.Printf("Received input array %v", r.Array)
-	return &ms.MaxResponse{Maximum: mf.Max(r.Array)}, nil
+// addHandler endpoint focus on the Add service to add x and y
+func addHandler(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Content-Type", "application/json: charset=UFT-8") // set the content header type
+	vars := mux.Vars(r)                                               // extract usable information from request object by parsing the inputs x and y
+
+	x, err := strconv.ParseInt(vars["x"], 10, 64) // extract value of x from the variale request arguments
+	if err != nil {
+		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter x")))
+	}
+
+	y, err := strconv.ParseInt(vars["y"], 10, 64) // extract value of y from the variale request arguments
+	if err != nil {
+		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter y")))
+	}
+
+	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute) // initialize a call Add service
+	defer cancel()
+
+	req := &ms.AddRequest{ // initialize the request struct
+		X: x,
+		Y: y,
+	}
+
+	g := gRPCClient() // call the initialized client
+	resp, err := g.Add(ctx, req)
+	if err == nil {
+		msg := fmt.Sprintf("Addition is %d:", resp.Result)
+		json.NewEncoder(w).Encode(msg)
+	} else {
+		log.Fatal(errors.Wrap(err, fmt.Sprintf("Internal Server error")))
+	}
 }
 
-// Min service handler method
-func (server *mathService) Min(ctx context.Context, r *ms.MinRequest) (*ms.MinResponse, error) {
-	log.Printf("Received input array %v", r.Array)
-	return &ms.MinResponse{Minimum: mf.Min(r.Array)}, nil
-}
-
-// Sort service handler method
-func (server *mathService) Sort(ctx context.Context, r *ms.SortRequest) (*ms.SortResponse, error) {
-	log.Printf("Received input array %v", r.Array)
-	return &ms.SortResponse{SortedArray: mf.Bubblesort(r.Array)}, nil
-}
-
-// Sum service handler method
-func (server *mathService) Sum(ctx context.Context, r *ms.SumRequest) (*ms.SumResponse, error) {
-	log.Printf("Received input array %v", r.Array)
-	return &ms.SumResponse{ArrayValuesSum: mf.Sum(r.Array)}, nil
+// serviceRequestHandler() defines request handling service [used to aggregate all endpoints before running]
+func serviceRequestHandlers() {
+	muxRouter := mux.NewRouter().StrictSlash(true)                     // instantiate the gorillamux Router and enforce trailing slash rule i.e. `/path` === `/path/`
+	muxRouter.NotFoundHandler = http.HandlerFunc(custom404PageHandler) // customer 404 Page handler scenario
+	muxRouter.HandleFunc("/", mathServiceAPIHomePage)
+	muxRouter.HandleFunc("/{x}/{y}", addHandler).Methods("GET") // responds to DELETE request to remove an article with a specific identifier
+	fmt.Println("API Endpoint is up an running now at : 8080")
+	log.Fatal(http.ListenAndServe(":8080", muxRouter)) // set the port where the http server listens and serves. changed `nil` to the instance muxRouter
 }
 
 func main() {
+	go serviceRequestHandlers() // call and run the server as a goroutine
 
-	// start a server listener
-	listener, err := net.Listen("tcp", port)
-	if err != nil {
-		log.Fatal(errors.Wrap(err, fmt.Sprintf("Failed to listen on port %v", port)))
-	}
-
-	// instanstiate a gRPC server
-	server := grpc.NewServer()
-	ms.RegisterMathServiceServer(server, &mathService{})
-	reflection.Register(server) // provides publicly accessible information about this `server`
-
-	// start the gRPC Server
-	err = server.Serve(listener)
-	if err != nil {
-		log.Fatal(errors.Wrap(err, "Failed to start gRPC Server"))
-	}
+	// create an artificial pause "to ensure the main function goroutine does not cause the serviceRequestHandler goroutine to exit"
+	var tempString string
+	fmt.Scanln(&tempString)
 }
