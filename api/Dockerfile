@@ -13,9 +13,6 @@ ADD . /go/src/api/
 # designate the working directory within the container
 WORKDIR /go/src/api/
 
-# copies the Gopkg.toml and Gopkg.lock to WORKDIR
-COPY Gopkg.toml Gopkg.lock ./
-
 # Expose the default port
 EXPOSE 8080
 

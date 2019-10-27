@@ -1,0 +1,12 @@
+FROM golang:1.12.7-buster
+
+WORKDIR /go/src/github.com/damilarelana/goMicroservice/server
+COPY server .
+COPY mathService ../mathService
+
+RUN go get -v ./...
+RUN go install -v ./...
+
+EXPOSE 9090
+
+CMD ["server"]

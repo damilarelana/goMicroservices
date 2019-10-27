@@ -13,9 +13,6 @@ ADD . /go/src/server/
 # designate the working directory within the container
 WORKDIR /go/src/server/
 
-# copies the Gopkg.toml and Gopkg.lock to WORKDIR
-COPY Gopkg.toml Gopkg.lock ./
-
 # Expose the default port
 EXPOSE 9090
 
