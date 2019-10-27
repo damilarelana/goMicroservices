@@ -74,7 +74,7 @@ func main() {
 	err = server.Serve(listener)
 	if err != nil {
 		log.Fatal(errors.Wrap(err, "Failed to start gRPC Server"))
+	} else {
+		fmt.Println("Microservice is up and running at http://127.0.0.1:9090")
 	}
-
-	fmt.Println("Microservice is up and running at http://127.0.0.1:9090")
 }
