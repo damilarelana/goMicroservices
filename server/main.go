@@ -57,7 +57,8 @@ func (server *mathService) Sum(ctx context.Context, r *ms.SumRequest) (*ms.SumRe
 	return &ms.SumResponse{ArrayValuesSum: mf.Sum(r.Array)}, nil
 }
 
-func main() {
+// serviceRequestHandler() defines how the gRPC server is started
+func serviceRequestHandlers() {
 
 	// start a server listener
 	listener, err := net.Listen("tcp", port)
@@ -77,4 +78,13 @@ func main() {
 	} else {
 		fmt.Println("Microservice is up and running at http://127.0.0.1:9090")
 	}
+}
+
+func main() {
+
+	go serviceRequestHandlers() // call and run the server as a goroutine
+
+	// create an artificial pause "to ensure the main function goroutine does not cause the serviceRequestHandler goroutine to exit"
+	var tempString string
+	fmt.Scanln(&tempString)
 }
