@@ -17,7 +17,7 @@ import (
 )
 
 // mathServiceAPIHomePage defines the landing page for the API
-func mathServiceAPIHomePage(w http.ResponseWriter, r *http.Request) {
+func msAPIHomePage(w http.ResponseWriter, r *http.Request) {
 	dataHomePage := "Endpoint: homepage"
 	io.WriteString(w, dataHomePage)
 }
@@ -30,9 +30,8 @@ func custom404PageHandler(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, data404Page)
 }
 
-func gRPCClient() MathServiceClient {
-	// Connect to the MathsService
-	conn, err := grpc.Dial("math-service:9090", grpc.WithInsecure())
+func gRPCClient() ms.MathServiceClient {
+	conn, err := grpc.Dial("math-service:9090", grpc.WithInsecure()) // Connect to the MathsService
 	if err != nil {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Dial failed")))
 	}
@@ -42,32 +41,26 @@ func gRPCClient() MathServiceClient {
 
 // addHandler endpoint focus on the Add service to add x and y
 func addHandler(w http.ResponseWriter, r *http.Request) {
-
 	w.Header().Set("Content-Type", "application/json: charset=UFT-8") // set the content header type
 	vars := mux.Vars(r)                                               // extract usable information from request object by parsing the inputs x and y
-
-	x, err := strconv.ParseInt(vars["x"], 10, 64) // extract value of x from the variale request arguments
+	x, err := strconv.ParseInt(vars["x"], 10, 64)                     // extract value of x from the variale request arguments
 	if err != nil {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter x")))
 	}
-
 	y, err := strconv.ParseInt(vars["y"], 10, 64) // extract value of y from the variale request arguments
 	if err != nil {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter y")))
 	}
-
-	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute) // initialize a call Add service
+	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute) // initialize resources context
 	defer cancel()
-
 	req := &ms.AddRequest{ // initialize the request struct
 		X: x,
 		Y: y,
 	}
-
 	g := gRPCClient() // call the initialized client
 	resp, err := g.Add(ctx, req)
 	if err == nil {
-		msg := fmt.Sprintf("Addition is %d:", resp.Result)
+		msg := fmt.Sprintf("Addition is %d:", resp.Addition)
 		json.NewEncoder(w).Encode(msg)
 	} else {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Internal Server error")))
@@ -78,10 +71,10 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 func serviceRequestHandlers() {
 	muxRouter := mux.NewRouter().StrictSlash(true)                     // instantiate the gorillamux Router and enforce trailing slash rule i.e. `/path` === `/path/`
 	muxRouter.NotFoundHandler = http.HandlerFunc(custom404PageHandler) // customer 404 Page handler scenario
-	muxRouter.HandleFunc("/", mathServiceAPIHomePage)
-	muxRouter.HandleFunc("/{x}/{y}", addHandler).Methods("GET") // responds to DELETE request to remove an article with a specific identifier
-	fmt.Println("API Endpoint is up an running now at : 8080")
-	log.Fatal(http.ListenAndServe(":8080", muxRouter)) // set the port where the http server listens and serves. changed `nil` to the instance muxRouter
+	muxRouter.HandleFunc("/", msAPIHomePage)
+	muxRouter.HandleFunc("/{x}/{y}", addHandler).Methods("GET")
+	fmt.Println("API is up an running now at : 8080")
+	log.Fatal(http.ListenAndServe(":8080", muxRouter)) // set the port where the http server listens and serves the API from
 }
 
 func main() {
