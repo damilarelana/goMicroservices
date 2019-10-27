@@ -14,7 +14,7 @@ import (
 )
 
 // set the Port that the server would be listening/serving from
-const port = ":9090"
+const port = ":9091"
 
 // Server to run the service [from mathService.proto]
 type mathService struct {
@@ -57,8 +57,7 @@ func (server *mathService) Sum(ctx context.Context, r *ms.SumRequest) (*ms.SumRe
 	return &ms.SumResponse{ArrayValuesSum: mf.Sum(r.Array)}, nil
 }
 
-// serviceRequestHandler() defines how the gRPC server is started
-func serviceRequestHandlers() {
+func main() {
 
 	// start a server listener
 	listener, err := net.Listen("tcp", port)
@@ -76,15 +75,6 @@ func serviceRequestHandlers() {
 	if err != nil {
 		log.Fatal(errors.Wrap(err, "Failed to start gRPC Server"))
 	} else {
-		fmt.Println("Microservice is up and running at http://127.0.0.1:9090")
+		fmt.Println("Microservice is up and running at http://127.0.0.1:9091")
 	}
-}
-
-func main() {
-
-	go serviceRequestHandlers() // call and run the server as a goroutine
-
-	// create an artificial pause "to ensure the main function goroutine does not cause the serviceRequestHandler goroutine to exit"
-	var tempString string
-	fmt.Scanln(&tempString)
 }
