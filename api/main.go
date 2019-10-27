@@ -30,6 +30,7 @@ func custom404PageHandler(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, data404Page)
 }
 
+// gRPCClient is used by the API to connect to the Microservice, when an API call is made to the API
 func gRPCClient() ms.MathServiceClient {
 	conn, err := grpc.Dial("math-service:9090", grpc.WithInsecure()) // Connect to the MathsService
 	if err != nil {
@@ -39,8 +40,46 @@ func gRPCClient() ms.MathServiceClient {
 	return msClient
 }
 
-// addHandler endpoint focus on the Add service to add x and y
+// strToArray takes in a url variable that is a string representation of an array,
+func strToArray(str string) (array []float64) {
+	byteData := []byte(str)
+	err := json.Unmarshal(byteData, &array)
+	if err != nil {
+		log.Fatal(errors.Wrap(err, fmt.Sprintf("Unable to convert string to array")))
+	}
+	return array
+}
+
+// addHandler endpoint focus on the Add service that sums up x and y, to give z
 func addHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json: charset=UFT-8") // set the content header type
+	vars := mux.Vars(r)                                               // extract usable information from request object by parsing the inputs x and y
+	x, err := strconv.ParseInt(vars["x"], 10, 64)                     // extract value of x from the variale request arguments
+	if err != nil {
+		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter x")))
+	}
+	y, err := strconv.ParseInt(vars["y"], 10, 64) // extract value of y from the variale request arguments
+	if err != nil {
+		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter y")))
+	}
+	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute) // initialize resources context
+	defer cancel()
+	req := &ms.AddRequest{ // initialize the request struct
+		X: x,
+		Y: y,
+	}
+	g := gRPCClient() // call the initialized client
+	resp, err := g.Add(ctx, req)
+	if err == nil {
+		msg := fmt.Sprintf("Addition is %d:", resp.Addition)
+		json.NewEncoder(w).Encode(msg)
+	} else {
+		log.Fatal(errors.Wrap(err, fmt.Sprintf("Internal Server error")))
+	}
+}
+
+// averageHandler endpoint focus on the Average service that finds the average value of an Array element
+func averageHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json: charset=UFT-8") // set the content header type
 	vars := mux.Vars(r)                                               // extract usable information from request object by parsing the inputs x and y
 	x, err := strconv.ParseInt(vars["x"], 10, 64)                     // extract value of x from the variale request arguments
