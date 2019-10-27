@@ -32,7 +32,7 @@ func custom404PageHandler(w http.ResponseWriter, r *http.Request) {
 
 // gRPCClient is used by the API to connect to the Microservice, when an API call is made to the API
 func gRPCClient() ms.MathServiceClient {
-	conn, err := grpc.Dial("localhost:9091", grpc.WithInsecure()) // Connect to the MathsService
+	conn, err := grpc.Dial("localhost:9090", grpc.WithInsecure()) // Connect to the MathsService
 	if err != nil {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Dial failed")))
 	}
@@ -193,6 +193,7 @@ func main() {
 	muxRouter.HandleFunc("/sort/{array}", sortHandler).Methods("GET")       // the sorting service endpoint mapping
 	fmt.Println("API is up and running at http://127.0.0.1:8080")
 	for {
-		log.Fatal(http.ListenAndServe(":8080", muxRouter)) // set the port where the http server listens and serves the API from
+		// log.Fatal(http.ListenAndServe(":8080", muxRouter)) // set the port where the http server listens and serves the API from
+		log.Fatal(errors.Wrap(http.ListenAndServe(":8080", muxRouter), "Failed to start gRPC Server"))
 	}
 }
