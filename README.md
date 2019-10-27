@@ -19,3 +19,10 @@ The `Maths` microservice that:
 ***
 
 A `REST API` that responds to the client and routes them to the corresponding `Maths` compute
+
+***
+
+To start the application, you would need to enter the downloaded project directory, and then run the server and api in separate terminals respectively i.e.
+
+* for the `server`, execute `go run server/main.go`
+* for the `api`, execute `go run api/main.go`
