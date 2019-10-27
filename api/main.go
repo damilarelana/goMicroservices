@@ -32,7 +32,7 @@ func custom404PageHandler(w http.ResponseWriter, r *http.Request) {
 
 // gRPCClient is used by the API to connect to the Microservice, when an API call is made to the API
 func gRPCClient() ms.MathServiceClient {
-	conn, err := grpc.Dial("math-service:9090", grpc.WithInsecure()) // Connect to the MathsService
+	conn, err := grpc.Dial("localhost:9091", grpc.WithInsecure()) // Connect to the MathsService
 	if err != nil {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Dial failed")))
 	}
@@ -181,8 +181,7 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// serviceRequestHandler() defines request handling service [used to aggregate all endpoints before running]
-func serviceRequestHandlers() {
+func main() {
 	muxRouter := mux.NewRouter().StrictSlash(true)                     // instantiate the gorillamux Router and enforce trailing slash rule i.e. `/path` === `/path/`
 	muxRouter.NotFoundHandler = http.HandlerFunc(custom404PageHandler) // customer 404 Page handler scenario
 	muxRouter.HandleFunc("/", msAPIHomePage)
@@ -193,13 +192,7 @@ func serviceRequestHandlers() {
 	muxRouter.HandleFunc("/sum/{array}", sumHandler).Methods("GET")         // the summation service endpoint mapping
 	muxRouter.HandleFunc("/sort/{array}", sortHandler).Methods("GET")       // the sorting service endpoint mapping
 	fmt.Println("API is up and running at http://127.0.0.1:8080")
-	log.Fatal(http.ListenAndServe(":8080", muxRouter)) // set the port where the http server listens and serves the API from
-}
-
-func main() {
-	go serviceRequestHandlers() // call and run the server as a goroutine
-
-	// create an artificial pause "to ensure the main function goroutine does not cause the serviceRequestHandler goroutine to exit"
-	var tempString string
-	fmt.Scanln(&tempString)
+	for {
+		log.Fatal(http.ListenAndServe(":8080", muxRouter)) // set the port where the http server listens and serves the API from
+	}
 }
