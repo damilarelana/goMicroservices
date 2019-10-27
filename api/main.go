@@ -40,6 +40,15 @@ func gRPCClient() ms.MathServiceClient {
 	return msClient
 }
 
+// strToInt takes in a url variable that is a string representation of an int,
+func strToInt(str string) (num int64) {
+	num, err := strconv.ParseInt(str, 10, 64)
+	if err != nil {
+		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter conversion to int")))
+	}
+	return num
+}
+
 // strToArray takes in a url variable that is a string representation of an array,
 func strToArray(str string) (array []float64) {
 	byteData := []byte(str)
@@ -50,19 +59,13 @@ func strToArray(str string) (array []float64) {
 	return array
 }
 
-// addHandler endpoint focus on the Add service that sums up x and y, to give z
-func addHandler(w http.ResponseWriter, r *http.Request) {
+// averageHandler endpoint focus on the Average service that finds the average value of an Array element
+func averageHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json: charset=UFT-8") // set the content header type
 	vars := mux.Vars(r)                                               // extract usable information from request object by parsing the inputs x and y
-	x, err := strconv.ParseInt(vars["x"], 10, 64)                     // extract value of x from the variale request arguments
-	if err != nil {
-		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter x")))
-	}
-	y, err := strconv.ParseInt(vars["y"], 10, 64) // extract value of y from the variale request arguments
-	if err != nil {
-		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter y")))
-	}
-	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute) // initialize resources context
+	x := strToInt(vars["x"])                                          // extract value of x from the variable request arguments
+	y := strToInt(vars["y"])                                          // extract value of y from the variale request arguments
+	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)   // initialize resources context
 	defer cancel()
 	req := &ms.AddRequest{ // initialize the request struct
 		X: x,
@@ -78,19 +81,13 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// averageHandler endpoint focus on the Average service that finds the average value of an Array element
-func averageHandler(w http.ResponseWriter, r *http.Request) {
+// addHandler endpoint focus on the Add service that sums up x and y, to give z
+func addHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json: charset=UFT-8") // set the content header type
 	vars := mux.Vars(r)                                               // extract usable information from request object by parsing the inputs x and y
-	x, err := strconv.ParseInt(vars["x"], 10, 64)                     // extract value of x from the variale request arguments
-	if err != nil {
-		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter x")))
-	}
-	y, err := strconv.ParseInt(vars["y"], 10, 64) // extract value of y from the variale request arguments
-	if err != nil {
-		log.Fatal(errors.Wrap(err, fmt.Sprintf("Invalid parameter y")))
-	}
-	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute) // initialize resources context
+	x := strToInt(vars["x"])                                          // extract value of x from the variable request arguments
+	y := strToInt(vars["y"])                                          // extract value of y from the variale request arguments
+	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)   // initialize resources context
 	defer cancel()
 	req := &ms.AddRequest{ // initialize the request struct
 		X: x,
@@ -111,7 +108,8 @@ func serviceRequestHandlers() {
 	muxRouter := mux.NewRouter().StrictSlash(true)                     // instantiate the gorillamux Router and enforce trailing slash rule i.e. `/path` === `/path/`
 	muxRouter.NotFoundHandler = http.HandlerFunc(custom404PageHandler) // customer 404 Page handler scenario
 	muxRouter.HandleFunc("/", msAPIHomePage)
-	muxRouter.HandleFunc("/{x}/{y}", addHandler).Methods("GET")
+	muxRouter.HandleFunc("/{x}/{y}", addHandler).Methods("GET")     // the add service endpoint mapping
+	muxRouter.HandleFunc("/{array}", averageHandler).Methods("GET") // the average service endpoint mapping
 	fmt.Println("API is up an running now at : 8080")
 	log.Fatal(http.ListenAndServe(":8080", muxRouter)) // set the port where the http server listens and serves the API from
 }
