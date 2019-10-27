@@ -73,7 +73,9 @@ func sortHandler(w http.ResponseWriter, r *http.Request) {
 	resp, err := g.Sort(ctx, req)
 	if err == nil {
 		msg := fmt.Sprintf("Sorted array is %f:", resp.SortedArray)
-		json.NewEncoder(w).Encode(msg)
+		json.NewEncoder(w).Encode(msg)                     // encodes and sends the result to `browser` : which is the original stream [for input]
+		fmt.Println("Sorted array is: ", resp.SortedArray) // prints the same result to the line i.e. console
+		fmt.Println("================")
 	} else {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Internal Server error: sortHandler")))
 	}
@@ -92,8 +94,10 @@ func sumHandler(w http.ResponseWriter, r *http.Request) {
 	g := gRPCClient() // call the initialized client
 	resp, err := g.Sum(ctx, req)
 	if err == nil {
-		msg := fmt.Sprintf("Minimum element is %f:", resp.ArrayValuesSum)
-		json.NewEncoder(w).Encode(msg)
+		msg := fmt.Sprintf("Sum total of the elements is %f:", resp.ArrayValuesSum)
+		json.NewEncoder(w).Encode(msg)                                     // encodes and sends the result to `browser` : which is the original stream [for input]
+		fmt.Println("Sum total of the elements is: ", resp.ArrayValuesSum) // prints the same result to the line i.e. console
+		fmt.Println("================")
 	} else {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Internal Server error: sumHandler")))
 	}
@@ -113,7 +117,9 @@ func minHandler(w http.ResponseWriter, r *http.Request) {
 	resp, err := g.Min(ctx, req)
 	if err == nil {
 		msg := fmt.Sprintf("Minimum element is %f:", resp.Minimum)
-		json.NewEncoder(w).Encode(msg)
+		json.NewEncoder(w).Encode(msg)                    // encodes and sends the result to `browser` : which is the original stream [for input]
+		fmt.Println("Minimum element is: ", resp.Minimum) // prints the same result to the line i.e. console
+		fmt.Println("================")
 	} else {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Internal Server error: minHandler")))
 	}
@@ -133,7 +139,9 @@ func maxHandler(w http.ResponseWriter, r *http.Request) {
 	resp, err := g.Max(ctx, req)
 	if err == nil {
 		msg := fmt.Sprintf("Maximum element is %f:", resp.Maximum)
-		json.NewEncoder(w).Encode(msg)
+		json.NewEncoder(w).Encode(msg)                    // encodes and sends the result to `browser` : which is the original stream [for input]
+		fmt.Println("Maximum element is: ", resp.Maximum) // prints the same result to the line i.e. console
+		fmt.Println("================")
 	} else {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Internal Server error: maxHandler")))
 	}
@@ -153,7 +161,9 @@ func averageHandler(w http.ResponseWriter, r *http.Request) {
 	resp, err := g.Average(ctx, req)
 	if err == nil {
 		msg := fmt.Sprintf("Average is %f:", resp.Average)
-		json.NewEncoder(w).Encode(msg)
+		json.NewEncoder(w).Encode(msg)            // encodes and sends the result to `browser` : which is the original stream [for input]
+		fmt.Println("Average is: ", resp.Average) // prints the same result to the line i.e. console
+		fmt.Println("================")
 	} else {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Internal Server error: averageHandler")))
 	}
@@ -175,7 +185,9 @@ func addHandler(w http.ResponseWriter, r *http.Request) {
 	resp, err := g.Add(ctx, req)
 	if err == nil {
 		msg := fmt.Sprintf("Addition is %d:", resp.Addition)
-		json.NewEncoder(w).Encode(msg)
+		json.NewEncoder(w).Encode(msg)              // encodes and sends the result to `browser` : which is the original stream [for input]
+		fmt.Println("Addition is: ", resp.Addition) // prints the same result to the line i.e. console
+		fmt.Println("================")
 	} else {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Internal Server error: addHandler")))
 	}
