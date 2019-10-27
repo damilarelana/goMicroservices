@@ -186,12 +186,12 @@ func serviceRequestHandlers() {
 	muxRouter := mux.NewRouter().StrictSlash(true)                     // instantiate the gorillamux Router and enforce trailing slash rule i.e. `/path` === `/path/`
 	muxRouter.NotFoundHandler = http.HandlerFunc(custom404PageHandler) // customer 404 Page handler scenario
 	muxRouter.HandleFunc("/", msAPIHomePage)
-	muxRouter.HandleFunc("/{x}/{y}", addHandler).Methods("GET")     // the add service endpoint mapping
-	muxRouter.HandleFunc("/{array}", averageHandler).Methods("GET") // the average service endpoint mapping
-	muxRouter.HandleFunc("/{array}", maxHandler).Methods("GET")     // the maximum service endpoint mapping
-	muxRouter.HandleFunc("/{array}", minHandler).Methods("GET")     // the minimum service endpoint mapping
-	muxRouter.HandleFunc("/{array}", sumHandler).Methods("GET")     // the summation service endpoint mapping
-	muxRouter.HandleFunc("/{array}", sortHandler).Methods("GET")    // the sorting service endpoint mapping
+	muxRouter.HandleFunc("/add/{x}/{y}", addHandler).Methods("GET")         // the add service endpoint mapping
+	muxRouter.HandleFunc("/average/{array}", averageHandler).Methods("GET") // the average service endpoint mapping
+	muxRouter.HandleFunc("/max/{array}", maxHandler).Methods("GET")         // the maximum service endpoint mapping
+	muxRouter.HandleFunc("/min/{array}", minHandler).Methods("GET")         // the minimum service endpoint mapping
+	muxRouter.HandleFunc("/sum/{array}", sumHandler).Methods("GET")         // the summation service endpoint mapping
+	muxRouter.HandleFunc("/sort/{array}", sortHandler).Methods("GET")       // the sorting service endpoint mapping
 	fmt.Println("API is up and running at http://127.0.0.1:8080")
 	log.Fatal(http.ListenAndServe(":8080", muxRouter)) // set the port where the http server listens and serves the API from
 }
