@@ -14,7 +14,7 @@ import (
 )
 
 // set the Port that the server would be listening/serving from
-const port = ":9091"
+const port = ":9090"
 
 // Server to run the service [from mathService.proto]
 type mathService struct {
@@ -71,10 +71,9 @@ func main() {
 	reflection.Register(server) // provides publicly accessible information about this `server`
 
 	// start the gRPC Server
+	fmt.Println("Microservice is up and running at http://127.0.0.1:9090")
 	err = server.Serve(listener)
 	if err != nil {
 		log.Fatal(errors.Wrap(err, "Failed to start gRPC Server"))
-	} else {
-		fmt.Println("Microservice is up and running at http://127.0.0.1:9091")
 	}
 }
