@@ -1,4 +1,4 @@
-FROM golang:latest
+FROM golang:1.12.7-buster
 
 # Download and install the latest release of dep
 ADD https://github.com/golang/dep/releases/download/v0.5.4/dep-linux-amd64 /usr/local/bin/dep
