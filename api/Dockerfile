@@ -5,19 +5,22 @@ ADD https://github.com/golang/dep/releases/download/v0.5.4/dep-linux-amd64 /usr/
 RUN chmod +x /usr/local/bin/dep
 
 # create application directory in the container
-RUN mkdir -p /go/src/app/
+RUN mkdir -p /go/src/api/
 
 # copy the code into application directory in the container
-ADD . /go/src/app/
+ADD . /go/src/api/
 
 # designate the working directory within the container
-WORKDIR /go/src/app/
+WORKDIR /go/src/api/
 
 # copies the Gopkg.toml and Gopkg.lock to WORKDIR
 COPY Gopkg.toml Gopkg.lock ./
+
+# Expose the default port
+EXPOSE 8080
 
 # Download and install dependencies e.g. github.com/gorilla/mux etc.
 RUN dep ensure -vendor-only
 
 RUN go build -o main ./...
-CMD ["/go/src/app/main"]
+CMD ["/go/src/api/main"]
