@@ -192,7 +192,7 @@ func serviceRequestHandlers() {
 	muxRouter.HandleFunc("/{array}", minHandler).Methods("GET")     // the minimum service endpoint mapping
 	muxRouter.HandleFunc("/{array}", sumHandler).Methods("GET")     // the summation service endpoint mapping
 	muxRouter.HandleFunc("/{array}", sortHandler).Methods("GET")    // the sorting service endpoint mapping
-	fmt.Println("API is up an running now at : 8080")
+	fmt.Println("API is up an running now at http://127.0.0.1:8080")
 	log.Fatal(http.ListenAndServe(":8080", muxRouter)) // set the port where the http server listens and serves the API from
 }
 
