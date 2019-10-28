@@ -26,3 +26,35 @@ To start the application, you would need to enter the downloaded project directo
 
 * for the `server`, execute `go run server/main.go`
 * for the `api`, execute `go run api/main.go`
+
+***
+
+*Example*
+
+Let's test with integer `17`, integer `18` and array `[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]`, via the following endpoint requests:
+
+```
+127.0.0.1:8080/add/17/18
+127.0.0.1:8080/average/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+127.0.0.1:8080/max/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+127.0.0.1:8080/min/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+127.0.0.1:8080/sum/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+127.0.0.1:8080/sort/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+```
+
+This gives us the following results:
+
+```
+Addition is:  35
+================
+Average is:  55.8125
+================
+Maximum element is:  97
+================
+Minimum element is:  9
+================
+Sum total of the elements is:  893
+================
+Sorted array is:  [9 17 19 27 34 37 48 57 63 68 70 82 83 86 96 97]
+================
+```
