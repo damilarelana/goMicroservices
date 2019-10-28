@@ -1,12 +1,17 @@
 FROM golang:1.12.7-buster
 
+# designate the working directory within the container
 WORKDIR /go/src/github.com/damilarelana/goMicroservice/server
 COPY server .
+COPY mathFunctions ../mathFunctions
 COPY mathService ../mathService
 
+# Install dependencies
 RUN go get -v ./...
 RUN go install -v ./...
 
-EXPOSE 9090
+# Entrypoint
+ENTRYPOINT go run main.go
 
-CMD ["server"]
+# Expose the default port
+EXPOSE 9090

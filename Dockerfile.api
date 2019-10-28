@@ -1,12 +1,17 @@
 FROM golang:1.12.7-buster
 
+# designate the working directory within the container
 WORKDIR /go/src/github.com/damilarelana/goMicroservice/api
 COPY api .
+COPY mathFunctions ../mathFunctions
 COPY mathService ../mathService
 
+# Install dependencies
 RUN go get -v ./...
 RUN go install -v ./...
 
-EXPOSE 8080
+# Entrypoint
+ENTRYPOINT go run main.go
 
-CMD ["api"]
+# Expose the default port
+EXPOSE 8080
