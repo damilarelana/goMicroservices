@@ -31,7 +31,7 @@ To start the application, you would need to enter the downloaded project directo
 
 *Example*
 
-Let's test with integer `17`, integer `18` and array `[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]`, via the following endpoint requests:
+Let's test with integer `17`, integer `18` and array `[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]`, via these sample requests:
 
 ```
 127.0.0.1:8080/add/17/18
