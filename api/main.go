@@ -32,7 +32,7 @@ func custom404PageHandler(w http.ResponseWriter, r *http.Request) {
 
 // gRPCClient is used by the API to connect to the Microservice, when an API call is made to the API
 func gRPCClient() ms.MathServiceClient {
-	conn, err := grpc.Dial("localhost:9090", grpc.WithInsecure()) // Connect to the MathsService
+	conn, err := grpc.Dial("math-service:9090", grpc.WithInsecure()) // Connect to the MathsService
 	if err != nil {
 		log.Fatal(errors.Wrap(err, fmt.Sprintf("Dial failed")))
 	}
