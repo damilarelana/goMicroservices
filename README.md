@@ -52,14 +52,14 @@ To deploy and start the application in `kubernetes`, we need to make a few chang
 Now test with integer `17`, integer `18` and array `[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]`, via the sample api requests:
 
 ```
-<ip-address:port>/add/17/18
-<ip-address:port>/average/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
-<ip-address:port>/max/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
-<ip-address:port>/min/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
-<ip-address:port>/sum/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
-<ip-address:port>/sort/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+curl <ip-address:port>/add/17/18
+curl <ip-address:port>/average/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+curl <ip-address:port>/max/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+curl <ip-address:port>/min/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+curl <ip-address:port>/sum/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+curl <ip-address:port>/sort/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
 ```
-where <http://ip-address:port> represents the result of running `minikube service api-service --url`. For example, if `<http://ip-address:port>` was `http://192.168.99.100:32348`, then it means the first api request becomes `192.168.99.100:32348/add/17/18`
+where `<http://ip-address:port>` represents the result of running `minikube service api-service --url`. For example, if `<http://ip-address:port>` was `http://192.168.99.100:32348`, then it means the first api request is `curl http://192.168.99.100:32348/add/17/18`. For the `array` parameters via a browser i.e. simply copy and paste 
 
 *** 
 

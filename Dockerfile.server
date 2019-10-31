@@ -11,7 +11,7 @@ RUN go get -v ./...
 RUN go install -v ./...
 
 # Entrypoint
-ENTRYPOINT go run main.go
+ENTRYPOINT ["go", "run", "main.go"]
 
 # Expose the default port
 EXPOSE 9090

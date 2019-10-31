@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: math-service-server:v1.0
+        image: math-service-server:latest
         imagePullPolicy: IfNotPresent
         ports:
         - name: math-service

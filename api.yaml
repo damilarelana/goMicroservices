@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: math-service-api:v1.0
+        image: math-service-api:latest
         imagePullPolicy: IfNotPresent
         ports:
         - name: api-service
@@ -27,9 +27,10 @@ kind: Service
 metadata:
   name: api-service
 spec:
-  type: NodePort
   selector:
     app: api
   ports:
-  - port: 8080
-    targetPort: api-service
+  - name: http
+    port: 8080
+    nodePort: 30080
+  type: NodePort
