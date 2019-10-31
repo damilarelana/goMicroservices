@@ -49,17 +49,17 @@ To deploy and start the application in `kubernetes`, we need to make a few chang
 * deploy the `server` to kubernetes by running `kubectl create -f server.yaml`
 * copy the `api`'s new kubernetes ip address after running `minikube service api-service --url`
 
-Now test with integer `17`, integer `18` and array `[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]`, via the sample api requests:
+Now test again with integer `17`, integer `18` and array `[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]`, via the sample api requests:
 
 ```
-curl <ip-address:port>/add/17/18
-curl <ip-address:port>/average/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
-curl <ip-address:port>/max/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
-curl <ip-address:port>/min/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
-curl <ip-address:port>/sum/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
-curl <ip-address:port>/sort/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+<ip-address:port>/add/17/18
+<ip-address:port>/average/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+<ip-address:port>/max/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+<ip-address:port>/min/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+<ip-address:port>/sum/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
+<ip-address:port>/sort/[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]
 ```
-where `<http://ip-address:port>` represents the result of running `minikube service api-service --url`. For example, if `<http://ip-address:port>` was `http://192.168.99.100:32348`, then it means the first api request is `curl http://192.168.99.100:32348/add/17/18`. For the `array` parameters via a browser i.e. simply copy and paste 
+where `<http://ip-address:port>` represents the result of running `minikube service api-service --url`. For example, if `<http://ip-address:port>` was `http://192.168.99.100:32348`, then we can use the `terminal` to make the api request: `curl http://192.168.99.100:32348/add/17/18`. For the `array`: `[48, 96, 86, 68, 57, 82, 63, 70, 37, 34, 83, 27, 19, 97, 9, 17]` samples, simply copy/past the requests into a browser's address bar i.e. intead of using `curl`. 
 
 *** 
 
